@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//LOGGER" "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- Appenders -->
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p: %t %c - %m%n"/>
+        </layout>
+    </appender>
+    <appender name="TESTER" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="${catalina.base}/logs/tester.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="20MB" />
+		<param name="MaxBackupIndex" value="5" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{ISO8601}] %-5p %t %m%n" />
+		</layout>
+	</appender>
+	<logger name="au.com.auspost">		
+        <level value="DEBUG"/>   
+        <appender-ref ref="STDOUT"/> 
+    </logger>
+    
+	<logger name="org.springframework">		
+        <level value="DEBUG"/>   
+        <appender-ref ref="TESTER"/> 
+    </logger>
+    
+	<!-- Root Logger -->
+    <root>
+       <priority value="INFO"/>             
+       <appender-ref ref="TESTER"/>              
+    </root>
+
+</log4j:configuration>

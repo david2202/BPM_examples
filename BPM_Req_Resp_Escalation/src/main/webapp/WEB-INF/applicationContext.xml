@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util-3.1.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+ 
+	<context:property-placeholder location="classpath:process.properties" />
+	<context:annotation-config />
+	<context:component-scan base-package="au.com.david.bpm" />
+	
+	<!-- bind the process engine service as Spring Bean -->
+	<bean name="processEngineService" class="org.camunda.bpm.BpmPlatform"
+		factory-method="getProcessEngineService" />
+
+	<!-- bind the default process engine as Spring Bean -->
+	<bean name="processEngine" factory-bean="processEngineService"
+		factory-method="getDefaultProcessEngine" />
+
+	<bean id="repositoryService" factory-bean="processEngine"
+		factory-method="getRepositoryService" />
+	<bean id="runtimeService" factory-bean="processEngine"
+		factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine"
+		factory-method="getTaskService" />
+	<bean id="historyService" factory-bean="processEngine"
+		factory-method="getHistoryService" />
+	<bean id="managementService" factory-bean="processEngine"
+		factory-method="getManagementService" />
+
+	<!-- bootstrap the process application -->
+	<bean id="processApplication"
+		class="org.camunda.bpm.engine.spring.application.SpringServletProcessApplication" />
+	
+</beans>
